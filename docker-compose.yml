@@ -1,0 +1,35 @@
+version: '2.1'
+services:
+  mongo:
+    hostname: mongo
+    ports:
+      - 27017:27017
+    image: mongo:latest
+    container_name: mongo-database-flask-movie-api
+    command: --storageEngine wiredTiger
+    networks:
+      - test-network
+    environment:
+      DATABASE: "test"
+
+  flask:
+    build: .
+    hostname: flask
+    container_name: flask-movies-api
+    links:
+      - mongo
+    ports:
+      - 5000:5000
+    command: python3.8 app.py
+    networks:
+      - test-network
+    volumes: 
+      - .:/app
+
+networks:
+  test-network:
+    ipam:
+      driver:
+        default
+      config:
+        - subnet: 172.60.0.0/16

@@ -1,0 +1,3 @@
+Flask
+Flask-bcrypt
+Flask-JWT-Extended
